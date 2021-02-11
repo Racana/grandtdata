@@ -11,7 +11,7 @@ default_args = {
 dag = DAG(
     dag_id='grandtdag',
     default_args=default_args,
-    schedule_interval='*/10 * * * *',
+    schedule_interval='0 9 * * 3', #Every Wednesday at 9am
     tags=['testing'],
     start_date=days_ago(2)
 )
