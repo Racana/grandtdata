@@ -24,13 +24,13 @@ obtain_links = BashOperator(
 
 download_data = BashOperator(
     task_id='download_planetagrandt',
-    bash_command='python3 ~/testingfolder/planetagrandt.py',
+    bash_command='python3 ~/testingfolder/grandtdownload.py',
     dag=dag
 )
 
 save_data = BashOperator(
     task_id='save_planetagrandt',
-    bash_command='python3 ~/testingfolder/planetagrandt.py',
+    bash_command='python3 ~/testingfolder/grandt_etl.py',
     dag=dag
 )
 

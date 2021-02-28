@@ -50,16 +50,20 @@ def parse_date(date):
 
 def run():
     url = 'https://www.planetagrandt.com.ar/search/label/Estad%C3%ADsticas'
-    validate = pd.read_csv('~/testingfolder/grandtlinks.csv')
-    validate.dates = validate.dates.apply(pd.to_datetime)
+    try:
+        validate = pd.read_csv('grandtlinks.csv')
+        validate.dates = validate.dates.apply(pd.to_datetime)
+        header = False
+    except FileNotFoundError:
+        validate = pd.DataFrame(columns=['links', 'dates'])
+        header = True
 
     links = []
     dates = []
     
     df = obtain_links(url, links, dates, validate)
 
-    df.to_csv('~/testingfolder/grandtlinks.csv', index=False, mode='a', header=False)
-
+    df.to_csv('grandtlinks.csv', index=False, mode='a', header=header)
     print('job completed')
 
 if __name__ == "__main__":

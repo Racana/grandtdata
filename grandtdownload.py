@@ -44,19 +44,25 @@ def data_downloading(url):
 
     return df
 
-data = pd.read_csv('~/testingfolder/grandtlinks.csv')
-data['filename'] = data['filename'].astype(str)
+data = pd.read_csv('grandtlinks.csv')
+try:
+    data['filename'] = data['filename'].astype(str)
+except KeyError:
+    data['filename'] = 'nan'
 
 for index, row in data.iterrows():
-    if row['filename'] != 'nan' : #is there a more pythonic way to do this?
-        filename = row['filename']
-        print(f'File already downloaded at {filename}')
+    try:        
+        if row['filename'] != 'nan' : #is there a more pythonic way to do this?
+            filename = row['filename']
+            print(f'File already downloaded at {filename}')
+            continue
+        url = row['links']
+        print(url)
+        df = data_downloading(url)
+        print(f'saving file planetagrandt_torneo_{torneo}_fecha_{fecha}.csv')
+        df.to_csv(f'data/planetagrandt_torneo_{torneo}_fecha_{fecha}.csv', index=False)
+        data.at[index, 'filename'] = f'planetagrandt_torneo_{torneo}_fecha_{fecha}.csv'
+    except:
         continue
-    url = row['links']
-    print(url)
-    df = data_downloading(url)
-    print(f'saving file planetagrandt_torneo_{torneo}_fecha_{fecha}.csv')
-    df.to_csv(f'~/testingfolder/data/planetagrandt_torneo_{torneo}_fecha_{fecha}.csv', index=False)
-    data.at[index, 'filename'] = f'planetagrandt_torneo_{torneo}_fecha_{fecha}.csv'
 
-data.to_csv('~/testingfolder/grandtlinks.csv', index=False)
+data.to_csv('grandtlinks.csv', index=False)
